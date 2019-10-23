@@ -1,6 +1,6 @@
 
-int minLight = 200;
-int maxLight = 800;
+int minLight = 1000;
+int maxLight = 0;
 
 void calibrateLight() {
   int n;
@@ -16,15 +16,20 @@ void calibrateLight() {
 
 int lightMap(int light){
   int m = (int)((light-minLight)*255./(maxLight-minLight));
-    if(light-minLight<0) return 0;
-    else if (light>maxLight) return 255;
-    else return 255-m;
+    m = 255-m;
+    
+    if(m<0) return 0;
+    else if (m>255) return 255;
+    else return m;
   }
 
 
 void setup() {
   Serial.begin(9600);
   calibrateLight();
+  Serial.println(minLight);
+  Serial.println(maxLight);
+  Serial.println("---------------------------------");
 }
 
 void loop() {
@@ -33,7 +38,7 @@ void loop() {
   Serial.println(light);
   int ledLevel = lightMap(light);
   Serial.println(ledLevel);
-  analogWrite(5, ledLevel);
+  analogWrite(3, ledLevel);
 
   delay(50);
 }
